@@ -1,0 +1,19 @@
+{
+  "name": "votting-app",
+  "version": "1.0.0",
+  "description": "My first project in backend dev of a Votting Application.",
+  "license": "ISC",
+  "author": "Lucky Damami",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}

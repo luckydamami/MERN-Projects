@@ -1,0 +1,28 @@
+#Planning to How to create a MERN stack website
+1. Clear Your what ?
+2. Define the functionalities in your application.
+3. Make Database models/schemas.
+4. Define the Routes according user requirements.
+
+
+Votting application Routes
+
+User Authentication: 
+  /signup: POST - register the user details
+  /login:  POST - login to user through (aadhar number + password)
+
+Voting:
+  /candidates: GET - Get the list of candidate.
+  /vote/:candidateId: POST - Vote for specific candidate.
+
+Vote Counts: 
+  /vote/counts: GET - Get the list of candidates sorted by their vote counts.
+
+User Profile:
+  /profile: GET - Get the user's profile detail
+  /profile/password: PUT - change the user's password.
+
+Admin candidate Management:
+  /candidates: POST - Create a new candidate.
+  /candidates/:candidateId: PUT - Update an existing candidate
+  /candidates/:candidateId: DELETE - Delete a candidate from the list
