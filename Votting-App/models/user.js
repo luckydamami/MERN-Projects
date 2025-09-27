@@ -14,10 +14,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     mobile: {
       type: Number,
     },
-    AadharNum: {
+    aadhar: {
       type: Number,
       required: true,
       unique: true,
@@ -32,7 +36,7 @@ const userSchema = new mongoose.Schema(
       enum: ["voter", "admin"],
       default: "voter",
     },
-    isVoted: {
+    isvoted: {
       type: Boolean,
       default: false,
     },
