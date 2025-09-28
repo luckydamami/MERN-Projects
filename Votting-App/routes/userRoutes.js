@@ -1,17 +1,17 @@
 const express = require("express");
 const userRouter = express.Router();
 const { jwtAuthMiddleware, generateToken } = require("../jwt");
-const User = require("../models/user");
+const User = require("../models/user"); //represent the user collection in mongoDB.
 
 userRouter.post("/signup", async (req, res) => {
   try {
     //assuming the user data from req body.
-    const userData = req.body;
+    const data = req.body;
 
     //create a new user document using the Mongoose model.
-    const userObj = new User(userData);
+    const newUser = new User(data);
 
-    const response = await userObj.save();
+    const response = await newUser.save();
     console.log("Data Added Successfully!");
 
     let payload = {
@@ -33,7 +33,7 @@ userRouter.post("/login", async (req, res) => {
 
     const user = await User.findOne({ aadharNumber: aadharNumber });
     if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ error: `Invalid user login details!` });
+      return res.status(401).json({ error: `Invalid username and password!!` });
     }
     let payload = {
       id: user.id,
@@ -51,8 +51,8 @@ userRouter.get("/profile", async (req, res) => {
   try {
     const userData = req.user;
     const userId = userData.id;
+    //find the user in database through userId
     const user = await User.findById({ userId });
-
     res.status(200).json({ user });
   } catch (error) {
     console.log(error);
@@ -62,16 +62,19 @@ userRouter.get("/profile", async (req, res) => {
 
 userRouter.put("/profile/password", async (req, res) => {
   try {
-    const userId = req.user; //extract the id from the token;
-    const { currentPassword, newPassword } = req.body;
-
-    const user = User.findById({ userId });
-
+    const userId = req.user; //Extract the id from token
+    const { currentPassword, newPassword } = req.body; //Extract current and new password from the req.body
+    let user = await User.findById(userId);
     if (!(await user.comparePassword(currentPassword))) {
-      return res.status(401).json({ error: "Invalid username and password!" });
+      return res.status(401).json({ error: "Invalid username or password" });
     }
+
+    user.password = newPassword;
+    await user.save();
+    console.log("Your Password Was Updated Successfully!!");
+    res.status(200).json();
   } catch (error) {
-    console.log(err);
-    res.status(200).json({ error: "Internal server Error!" });
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
