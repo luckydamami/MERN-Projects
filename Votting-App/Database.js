@@ -1,19 +1,19 @@
-import mongoose from "mongoose";
-import dbName from "./dbName";
+// import mongoose from "mongoose";
+// import dbName from "./dbName";
 
-const connectDB = async () => {
-  try {
-    const connectionIntstance = await mongoose.connect(
-      `${process.env.MONGODB_URL}/${dbName}`
-    );
-    console.log(
-      `\n MongoDB connected !! DB HOST:${connectionIntstance.connection.host}`
-    );
-  } catch (error) {
-    console.log("Database connection error", error);
-    process.exit(1);
-  }
-};
+// const connectDB = async () => {
+//   try {
+//     const connectionIntstance = await mongoose.connect(
+//       `${process.env.MONGODB_URL}/${dbName}`
+//     );
+//     console.log(
+//       `\n MongoDB connected !! DB HOST:${connectionIntstance.connection.host}`
+//     );
+//   } catch (error) {
+//     console.log("Database connection error", error);
+//     process.exit(1);
+//   }
+// };
 
 // const express = require("express");
 // const app = express();

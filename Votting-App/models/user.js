@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -12,6 +13,7 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      required: true,
       unique: true,
     },
     address: {
@@ -19,17 +21,17 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     mobile: {
-      type: Number,
+      type: String,
     },
     aadhar: {
-      type: Number,
+      type: String,
       required: true,
       unique: true,
     },
     password: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
     },
     role: {
       type: String,
@@ -45,14 +47,14 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  const person = this;
+  //const person = this;
   //if new password regiesterd and update
-  if (!person.isModified("password")) return next();
+  if (!this.isModified("password")) return next();
 
   try {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(person.password, salt);
-    person.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    this.password = hashedPassword;
     next();
   } catch (err) {
     return next(err);

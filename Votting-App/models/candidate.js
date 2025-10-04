@@ -33,3 +33,6 @@ const candidateSchema = new mongoose.Schema(
 );
 
 const Candidate = mongoose.model("Candidate", candidateSchema);
+
+//module.exports = { Candidate }; //object ke form me export karta hai (import karte time destructuring required).
+module.exports = Candidate; //direct Candidate model export process

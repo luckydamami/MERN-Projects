@@ -1,22 +1,21 @@
 const mongoose = require("mongoose");
+
 require("dotenv").config();
 
-//establish the connection in mongoDB database
-mongoose.connect(`${process.env.MONGODB_URL}/Myvotting-app`);
+mongoose.connect(process.env.MONGODB_LOCAL_URI);
 
-//create the connection Object representing the mongoDb connection
 const db = mongoose.connection;
 
 db.on("connected", () => {
-  console.log("MongoDB Database is connected || Successfuly");
+  console.log("Mongo DB database is connected!");
 });
 
 db.on("disconnected", () => {
-  console.log("MongoDB Database is disconnected");
+  console.log("Mongo DB database is disconnected!");
 });
 
 db.on("error", (error) => {
-  console.log("Database was error occured!!", error);
+  console.log("Oops! error was occured on mongodb server!", error);
 });
 
 module.exports = db;

@@ -1,12 +1,16 @@
 const jwt = require("jsonwebtoken");
 
+//jwt middleware
 const jwtAuthMiddleware = (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
-  if (!authorizationHeader) return res.json({ err: "Invalid token" });
-
-  //extract the token from request headers authorization
+  if (!authorizationHeader) {
+    return res.status(400).json({ err: "Invalid token" });
+  }
   const token = authorizationHeader.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Unauthorized!" });
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized!" });
+  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRETKEY);
     req.user = decoded;
@@ -17,6 +21,7 @@ const jwtAuthMiddleware = (req, res, next) => {
   }
 };
 
+//jwt token generate function
 const generateToken = (userData) => {
   try {
     const token = jwt.sign(userData, process.env.JWT_SECRETKEY);

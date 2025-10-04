@@ -1,21 +1,25 @@
-//imported packages
 const express = require("express");
-const bodyParser = require("body-parser");
-const db = require("./db");
-
-var userRouter = require("./routes/userRoutes");
-
 const app = express();
+const { db } = require("./db");
+require("dotenv").config();
+
+const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-  console.log("User Authentication Middleware!!", req.method, req.url);
-  next();
-});
-app.use(userRouter);
-
 const PORT = process.env.PORT || 3000;
 
+const { jwtAuthMiddleware } = require("./jwt");
+
+//routing files
+const userRouter = require("./routes/userRoutes");
+const candidateRouter = require("./routes/candidateRoutes");
+
+app.get("/", (req, res) => {
+  res.send("Welcome to my votting application!");
+});
+
+app.use("/user", userRouter);
+app.use("/candidates", jwtAuthMiddleware, candidateRouter);
+
 app.listen(PORT, (error) => {
-  console.log(`Server is listening on port http://localhost:${PORT}`);
+  console.log(`server listen on port http://localhost${PORT}`);
 });
