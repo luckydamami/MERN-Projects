@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const jwtAuthMiddleware = (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
   if (!authorizationHeader) {
-    return res.status(400).json({ err: "Invalid token" });
+    return res.status(400).json({ err: "Token must be required!" });
   }
-  const token = authorizationHeader.split(" ")[1];
+  const token = authorizationHeader.split(" ")[1]; //extract the token from req.headers
   if (!token) {
     return res.status(401).json({ error: "Unauthorized!" });
   }
@@ -17,7 +17,7 @@ const jwtAuthMiddleware = (req, res, next) => {
     next();
   } catch (err) {
     console.log(err);
-    res.status(401).json({ err: "Token is must required!" });
+    res.status(401).json({ err: "Token is invalid!" });
   }
 };
 

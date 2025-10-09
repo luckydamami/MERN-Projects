@@ -7,8 +7,6 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 const PORT = process.env.PORT || 3000;
 
-const { jwtAuthMiddleware } = require("./jwt");
-
 //routing files
 const userRouter = require("./routes/userRoutes");
 const candidateRouter = require("./routes/candidateRoutes");
@@ -18,7 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRouter);
-app.use("/candidates", jwtAuthMiddleware, candidateRouter);
+
+app.use("/candidate", candidateRouter);
 
 app.listen(PORT, (error) => {
   console.log(`server listen on port http://localhost${PORT}`);
