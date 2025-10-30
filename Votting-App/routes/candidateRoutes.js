@@ -85,7 +85,6 @@ candidateRouter.post(
   "/vote/:candidateID",
   jwtAuthMiddleware,
   async (req, res) => {
-    //is not admin
     const candidateID = req.params.candidateID;
     const userID = req.user.id;
 
@@ -108,6 +107,7 @@ candidateRouter.post(
         return res.status(404).json({ message: "admin has can't voted!" });
       }
 
+      //updated candidate document
       candidate.votes.push({ user: userID });
       candidate.voteCount++;
       await candidate.save();
@@ -118,6 +118,45 @@ candidateRouter.post(
     } catch (error) {
       console.log("Internal server error!");
       res.status(500).json({ error });
+    }
+  }
+);
+
+candidateRouter.post(
+  "/vote/:candidateID",
+  jwtAuthMiddleware,
+  async (req, res) => {
+    const candidateID = req.params.candidateID;
+    const userID = req.user.id;
+    try {
+      const candidate = await Candidate.findById(candidateID);
+      if (!candidate) {
+        return res.status(404).json({ message: "candidate not found" });
+      }
+
+      const user = await User.findById(userID);
+      if (!user) {
+        return res.status(404).json({ message: "user not found" });
+      }
+      //check some conditions
+      if (user.isvoted) {
+        return res.status(403).json({ message: "user has already voted!" });
+      }
+      if (user.role === "admin") {
+        return res.status(403).json({ message: "admin can't vote!" });
+      }
+
+      //update candidate document
+      candidate.votes.push({ user: userID });
+      candidate.voteCount++;
+      await candidate.save();
+
+      //update user document
+      user.isvoted = true;
+      await user.save();
+    } catch (error) {
+      console.log("Internal server error!", error);
+      return res.status(404).json({ error: "Internal server error!" });
     }
   }
 );

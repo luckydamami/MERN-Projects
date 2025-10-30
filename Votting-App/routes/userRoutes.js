@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const { generateToken, jwtAuthMiddleware } = require("../jwt");
 const User = require("../models/user");
 
-//for user registration
+//routes for user registration
 userRouter.post("/signup", async (req, res) => {
   try {
     const data = req.body;
@@ -57,7 +57,7 @@ userRouter.post("/signin", async (req, res) => {
 //for access the profile
 userRouter.get("/profile", jwtAuthMiddleware, async (req, res) => {
   try {
-    const userData = req.user;
+    const userData = req.user; //token verification se return decoded response
     const userId = userData.id;
     //find the user in database through userId
     const user = await User.findById(userId);

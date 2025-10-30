@@ -1,24 +1,12 @@
 const express = require("express");
 const app = express();
-const { db } = require("./db");
-require("dotenv").config();
-
-const bodyParser = require("body-parser");
-app.use(bodyParser.json());
-const PORT = process.env.PORT || 3000;
-
-//routing files
-const userRouter = require("./routes/userRoutes");
-const candidateRouter = require("./routes/candidateRoutes");
 
 app.get("/", (req, res) => {
-  res.send("Welcome to my votting application!");
+  res.send("Hello world!");
 });
 
-app.use("/user", userRouter);
+const port = process.env.PORT || 3000;
 
-app.use("/candidate", candidateRouter);
-
-app.listen(PORT, (error) => {
-  console.log(`server listen on port http://localhost${PORT}`);
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });
